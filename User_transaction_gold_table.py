@@ -105,3 +105,19 @@ df_transact_gold.display()
 df_transact_gold.write.format("delta").mode("overwrite").saveAsTable(
     "demo.card_transactions_gold"
 )
+
+# COMMAND ----------
+
+from delta.tables import DeltaTable
+delta_table_path="dbfs:/user/hive/warehouse/demo.db/card_transactions_gold"
+df=DeltaTable.forPath(spark,delta_table_path)
+
+
+# COMMAND ----------
+
+
+df=spark.sql("SELECT * FROM demo.card_transactions_gold")
+
+# COMMAND ----------
+
+df.display()

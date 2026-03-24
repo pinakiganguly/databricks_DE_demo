@@ -1,0 +1,1274 @@
+{
+  "datasets": [
+    {
+      "name": "temp_dataset_name",
+      "displayName": "card_transactions_gold",
+      "queryLines": [
+        "select *\r\n",
+        "from\r\n",
+        "  hive_metastore.demo.card_transactions_gold;"
+      ]
+    },
+    {
+      "name": "96b31cf0",
+      "displayName": "Transaction_in_city_with_partic_card_num",
+      "queryLines": [
+        "-- Find users who have made transactions in the city starting with letter N and have a card number starting with 5 and are from the zip codes is not equal to 0\r\n",
+        "select\r\n",
+        "  user_id,\r\n",
+        "  transaction_date\r\n",
+        "from\r\n",
+        "  hive_metastore.demo.card_transactions_gold\r\n",
+        "where\r\n",
+        "  card_number like('5%')\r\n",
+        "  and zip in (\r\n",
+        "    select\r\n",
+        "      zip\r\n",
+        "    from\r\n",
+        "      hive_metastore.demo.card_transactions_gold\r\n",
+        "    where\r\n",
+        "      zip <> 0\r\n",
+        "  )\r\n",
+        "  and merchant_city in(\r\n",
+        "    select\r\n",
+        "      merchant_city\r\n",
+        "    from\r\n",
+        "      hive_metastore.demo.card_transactions_gold\r\n",
+        "    where\r\n",
+        "      merchant_city like('N%')\r\n",
+        "  );"
+      ]
+    },
+    {
+      "name": "a7d2edd3",
+      "displayName": "Maximum credit score of each users",
+      "queryLines": [
+        "select\n",
+        "  user_id,\n",
+        "  max(credit_score) as Max_credit_score\n",
+        "from\n",
+        "  hive_metastore.demo.card_transactions_gold\n",
+        "group by\n",
+        "  user_id\n",
+        "order by\n",
+        "  user_id;"
+      ]
+    },
+    {
+      "name": "b8ab0de3",
+      "displayName": "Users from particular address whose age is 40yrs",
+      "queryLines": [
+        "select\n",
+        "  distinct user_id,\n",
+        "  card_id,\n",
+        "  address,\n",
+        "  credit_score,\n",
+        "  current_age\n",
+        "from\n",
+        "  hive_metastore.demo.card_transactions_gold\n",
+        "where\n",
+        "  current_age = 40;"
+      ]
+    },
+    {
+      "name": "6f86625c",
+      "displayName": "No of transactions done from merchants of particular city",
+      "queryLines": [
+        "select\n",
+        "  count(transaction_id) as Number_of_transactions,\n",
+        "  merchant_city\n",
+        "from\n",
+        "  hive_metastore.demo.card_transactions_gold\n",
+        "group by\n",
+        "  merchant_city\n",
+        "order by\n",
+        "  Number_of_transactions desc;"
+      ]
+    },
+    {
+      "name": "5454401c",
+      "displayName": "No of transactions done from merchants of particular city",
+      "queryLines": [
+        "select\n",
+        "  count(transaction_id) as Number_of_transactions,\n",
+        "  merchant_city\n",
+        "from\n",
+        "  hive_metastore.demo.card_transactions_gold\n",
+        "group by\n",
+        "  merchant_city\n",
+        "order by\n",
+        "  Number_of_transactions desc;"
+      ]
+    },
+    {
+      "name": "48efd55e",
+      "displayName": "Maximum transaction done by user  and of which card company",
+      "queryLines": [
+        "select\r\n",
+        "  user_id,\r\n",
+        "  card_brand,\r\n",
+        "  max(`Amount_in_$`) as Maximum_transaction_amount\r\n",
+        "from\r\n",
+        "  hive_metastore.demo.card_transactions_gold\r\n",
+        "group by\r\n",
+        "  user_id,\r\n",
+        "  card_brand\r\n",
+        "order by\r\n",
+        "  Maximum_transaction_amount desc;"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "temp_page_name",
+      "displayName": "Dashboard_overview",
+      "layout": [
+        {
+          "widget": {
+            "name": "temp_text_box_name",
+            "multilineTextboxSpec": {
+              "lines": [
+                "\n",
+                "# Dashboard for card_transactions_gold table\n",
+                "\n",
+                "The dashboard you created for hive_metastore.demo.card_transactions_gold is ready!\n",
+                "\n",
+                "The widget to the right of this one allows you to generate a chart based on this dataset using natural language. Click the widget to start typing a description of the chart you'd like to see. Alternatively, you can edit any selected widget using the controls in the right panel.\n",
+                "\n",
+                "You can also edit, copy, or delete any widget on the canvas.\n",
+                "    "
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "temp_table_name",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "temp_dataset_name",
+                  "fields": [
+                    {
+                      "name": "user_id",
+                      "expression": "`user_id`"
+                    },
+                    {
+                      "name": "card_id",
+                      "expression": "`card_id`"
+                    },
+                    {
+                      "name": "current_age",
+                      "expression": "`current_age`"
+                    },
+                    {
+                      "name": "address",
+                      "expression": "`address`"
+                    },
+                    {
+                      "name": "credit_score",
+                      "expression": "`credit_score`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "user_id",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100000,
+                    "title": "user_id",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false,
+                    "displayName": "user_id"
+                  },
+                  {
+                    "fieldName": "card_id",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100001,
+                    "title": "card_id",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false,
+                    "displayName": "card_id"
+                  },
+                  {
+                    "fieldName": "current_age",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100004,
+                    "title": "current_age",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false,
+                    "displayName": "current_age"
+                  },
+                  {
+                    "fieldName": "address",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100006,
+                    "title": "address",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false,
+                    "displayName": "address"
+                  },
+                  {
+                    "fieldName": "credit_score",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100008,
+                    "title": "credit_score",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false,
+                    "displayName": "credit_score"
+                  }
+                ]
+              },
+              "invisibleColumns": [
+                {
+                  "numberFormat": "0",
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "transaction_id",
+                  "type": "integer",
+                  "displayAs": "number",
+                  "order": 100002,
+                  "title": "transaction_id",
+                  "allowSearch": false,
+                  "alignContent": "right",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "numberFormat": "0",
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "merchant_id",
+                  "type": "integer",
+                  "displayAs": "number",
+                  "order": 100003,
+                  "title": "merchant_id",
+                  "allowSearch": false,
+                  "alignContent": "right",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "numberFormat": "0",
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "birth_month",
+                  "type": "integer",
+                  "displayAs": "number",
+                  "order": 100005,
+                  "title": "birth_month",
+                  "allowSearch": false,
+                  "alignContent": "right",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "numberFormat": "0",
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "num_credit_cards",
+                  "type": "integer",
+                  "displayAs": "number",
+                  "order": 100007,
+                  "title": "num_credit_cards",
+                  "allowSearch": false,
+                  "alignContent": "right",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "gender",
+                  "type": "string",
+                  "displayAs": "string",
+                  "order": 100009,
+                  "title": "gender",
+                  "allowSearch": false,
+                  "alignContent": "left",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "card_brand",
+                  "type": "string",
+                  "displayAs": "string",
+                  "order": 100010,
+                  "title": "card_brand",
+                  "allowSearch": false,
+                  "alignContent": "left",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "card_type",
+                  "type": "string",
+                  "displayAs": "string",
+                  "order": 100011,
+                  "title": "card_type",
+                  "allowSearch": false,
+                  "alignContent": "left",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "has_chip",
+                  "type": "string",
+                  "displayAs": "string",
+                  "order": 100012,
+                  "title": "has_chip",
+                  "allowSearch": false,
+                  "alignContent": "left",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "card_number",
+                  "type": "string",
+                  "displayAs": "string",
+                  "order": 100013,
+                  "title": "card_number",
+                  "allowSearch": false,
+                  "alignContent": "left",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "expires",
+                  "type": "string",
+                  "displayAs": "string",
+                  "order": 100014,
+                  "title": "expires",
+                  "allowSearch": false,
+                  "alignContent": "left",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "numberFormat": "0",
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "Credit_limit_in_$",
+                  "type": "integer",
+                  "displayAs": "number",
+                  "order": 100015,
+                  "title": "Credit_limit_in_$",
+                  "allowSearch": false,
+                  "alignContent": "right",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "card_on_dark_web",
+                  "type": "string",
+                  "displayAs": "string",
+                  "order": 100016,
+                  "title": "card_on_dark_web",
+                  "allowSearch": false,
+                  "alignContent": "left",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "dateTimeFormat": "YYYY-MM-DD HH:mm:ss.SSS",
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "transaction_date",
+                  "type": "datetime",
+                  "displayAs": "datetime",
+                  "order": 100017,
+                  "title": "transaction_date",
+                  "allowSearch": false,
+                  "alignContent": "right",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "use_chip",
+                  "type": "string",
+                  "displayAs": "string",
+                  "order": 100018,
+                  "title": "use_chip",
+                  "allowSearch": false,
+                  "alignContent": "left",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "numberFormat": "0.00",
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "zip",
+                  "type": "float",
+                  "displayAs": "number",
+                  "order": 100019,
+                  "title": "zip",
+                  "allowSearch": false,
+                  "alignContent": "right",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "merchant_state",
+                  "type": "string",
+                  "displayAs": "string",
+                  "order": 100020,
+                  "title": "merchant_state",
+                  "allowSearch": false,
+                  "alignContent": "left",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "merchant_city",
+                  "type": "string",
+                  "displayAs": "string",
+                  "order": 100021,
+                  "title": "merchant_city",
+                  "allowSearch": false,
+                  "alignContent": "left",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "numberFormat": "0.00",
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "Amount_in_$",
+                  "type": "float",
+                  "displayAs": "number",
+                  "order": 100022,
+                  "title": "Amount_in_$",
+                  "allowSearch": false,
+                  "alignContent": "right",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "numberFormat": "0",
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "MCC",
+                  "type": "integer",
+                  "displayAs": "number",
+                  "order": 100023,
+                  "title": "MCC",
+                  "allowSearch": false,
+                  "alignContent": "right",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                }
+              ],
+              "allowHTMLByDefault": false,
+              "itemsPerPage": 25,
+              "paginationSize": "default",
+              "condensed": true,
+              "withRowNumber": true
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "5e291265",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "temp_dataset_name",
+                  "fields": [
+                    {
+                      "name": "address",
+                      "expression": "`address`"
+                    },
+                    {
+                      "name": "user_id",
+                      "expression": "`user_id`"
+                    },
+                    {
+                      "name": "card_id",
+                      "expression": "`card_id`"
+                    },
+                    {
+                      "name": "credit_score",
+                      "expression": "`credit_score`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "area",
+              "encodings": {
+                "x": {
+                  "fieldName": "address",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "address"
+                },
+                "y": {
+                  "fields": [
+                    {
+                      "fieldName": "user_id",
+                      "displayName": "user_id"
+                    },
+                    {
+                      "fieldName": "card_id",
+                      "displayName": "card_id"
+                    },
+                    {
+                      "fieldName": "credit_score",
+                      "displayName": "credit_score"
+                    }
+                  ],
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "title": "Card Transactions by Gender",
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 10,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "5a01462f",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "temp_dataset_name",
+                  "fields": [
+                    {
+                      "name": "address",
+                      "expression": "`address`"
+                    },
+                    {
+                      "name": "count(*)",
+                      "expression": "COUNT(`*`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "histogram",
+              "encodings": {
+                "x": {
+                  "fieldName": "address",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "address"
+                },
+                "y": {
+                  "fieldName": "count(*)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Count of Records"
+                }
+              },
+              "frame": {
+                "title": "Card Transactions by Merchant State",
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 10,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "4ace9af7",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "a7d2edd3",
+                  "fields": [
+                    {
+                      "name": "user_id",
+                      "expression": "`user_id`"
+                    },
+                    {
+                      "name": "sum(Max_credit_score)",
+                      "expression": "SUM(`Max_credit_score`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "user_id",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "user_id"
+                },
+                "y": {
+                  "fieldName": "sum(Max_credit_score)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Max_credit_score"
+                }
+              },
+              "frame": {
+                "title": "Maximum credit score of each users",
+                "showTitle": true
+              },
+              "mark": {
+                "colors": [
+                  "#FF3746"
+                ],
+                "layout": "layer"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 16,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "909fe38f",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "b8ab0de3",
+                  "fields": [
+                    {
+                      "name": "count(address)",
+                      "expression": "COUNT(`address`)"
+                    },
+                    {
+                      "name": "user_id",
+                      "expression": "`user_id`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "count(address)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Count of address"
+                },
+                "color": {
+                  "fieldName": "user_id",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "user_id"
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "mark": {
+                "layout": "layer"
+              },
+              "frame": {
+                "title": "Users from particular address whose age is 40yrs",
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 16,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "a7f1718b",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "6f86625c",
+                  "fields": [
+                    {
+                      "name": "merchant_city",
+                      "expression": "`merchant_city`"
+                    },
+                    {
+                      "name": "sum(Number_of_transactions)",
+                      "expression": "SUM(`Number_of_transactions`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "merchant_city",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "merchant_city"
+                },
+                "y": {
+                  "fieldName": "sum(Number_of_transactions)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Sum of Number_of_transactions"
+                },
+                "color": {
+                  "fieldName": "merchant_city",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "merchant_city"
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "title": "No of transactions done from merchants of particular city",
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 22,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "86d8dbe8",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "48efd55e",
+                  "fields": [
+                    {
+                      "name": "card_brand",
+                      "expression": "`card_brand`"
+                    },
+                    {
+                      "name": "user_id",
+                      "expression": "`user_id`"
+                    },
+                    {
+                      "name": "Maximum_transaction_amount",
+                      "expression": "`Maximum_transaction_amount`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "scatter",
+              "encodings": {
+                "x": {
+                  "fieldName": "user_id",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "user_id"
+                },
+                "y": {
+                  "fieldName": "Maximum_transaction_amount",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Maximum_transaction_amount"
+                },
+                "color": {
+                  "fieldName": "card_brand",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "card_brand"
+                }
+              },
+              "frame": {
+                "title": "Maximum transaction done by user using  various card manufacturing company",
+                "showTitle": true,
+                "showDescription": false
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 28,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "1deb04b6",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "96b31cf0",
+                  "fields": [
+                    {
+                      "name": "yearly(transaction_date)",
+                      "expression": "DATE_TRUNC(\"YEAR\", `transaction_date`)"
+                    },
+                    {
+                      "name": "sum(user_id)",
+                      "expression": "SUM(`user_id`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "yearly(transaction_date)",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "transaction_date"
+                },
+                "y": {
+                  "fieldName": "sum(user_id)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Sum of user_id"
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "title": "Find users who have made transactions in the city starting with letter N and have a card number starting with 5 and are from the zip codes is not equal to 0",
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 22,
+            "width": 3,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "281962c4",
+      "displayName": "Untitled page",
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ]
+}
